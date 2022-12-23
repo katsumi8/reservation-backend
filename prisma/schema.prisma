@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Table {
+  id             Int           @id @default(autoincrement())
+  tableName      String
+  createdAt      DateTime      @default(now())
+  capability     String
+  isReserved     Boolean       @default(false)
+  position       String
+  isRounded      Boolean       @default(false)
+  isUnReservable Boolean       @default(false)
+  reservations   Reservation[]
+}
+
+model Reservation {
+  id           Int    @id @default(autoincrement())
+  table        Table  @relation(fields: [tableId], references: [id])
+  tableId      Int
+  date         String
+  timeSlot     String
+  description  String
+  PplNo        Int
+  reservedBy   User   @relation(fields: [reservedById], references: [id])
+  reservedById Int
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  name         String
+  email        String        @unique
+  phoneNo      String
+  reservations Reservation[]
+}
