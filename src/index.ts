@@ -1,4 +1,3 @@
-
 import { ApolloServer } from "apollo-server";
 import { typeDefs } from "./schema";
 import { PrismaClient, Prisma } from "@prisma/client";
@@ -20,6 +19,7 @@ const resolvers = { Query, Table, Reservation, User, Mutation };
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  cache: "bounded",
   context: ({ req }) => {
     return {
       ...req,
