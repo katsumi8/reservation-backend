@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon src/index.ts --watch ./**/*.ts --exec ts-node src/index.ts",
     "build": "rimraf ./dist && npm run generate && tsc",
-    "start": "npm run build && node dist/index.js",
+    "start": "node dist/index.js",
     "generate": "npm run generate:prisma",
     "generate:prisma": "prisma generate"
   },
