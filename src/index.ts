@@ -1,4 +1,8 @@
 import { ApolloServer } from "apollo-server";
+import {
+  ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageLocalDefault,
+} from "apollo-server-core";
 import { typeDefs } from "./schema";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { Query, Mutation, Table, Reservation, User } from "./resolvers"; // リゾルバ関係のファイル
@@ -19,7 +23,14 @@ const resolvers = { Query, Table, Reservation, User, Mutation };
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  cache: "bounded",
+  csrfPrevention: true,
+  cache: 'bounded',
+  plugins: [
+    process.env.NODE_ENV === "production"
+      ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
+      : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+  ],
+  // cache: "bounded",
   context: ({ req }) => {
     return {
       ...req,
